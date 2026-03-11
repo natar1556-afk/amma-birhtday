@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Happy Birthday Amma</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+color:white;
+padding:20px;
+overflow:hidden;
+}
+
+#countdown{
+font-size:32px;
+}
+
+#touch{
+display:none;
+font-size:28px;
+background:white;
+color:#ff4b5c;
+padding:15px 25px;
+border-radius:15px;
+cursor:pointer;
+}
+
+#quote{
+display:none;
+font-size:28px;
+max-width:600px;
+line-height:1.6;
+}
+
+#love{
+display:none;
+font-size:60px;
+margin-top:20px;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="countdown"></div>
+
+<div id="touch">🎉 Amma Touch the Screen 🎉</div>
+
+<div>
+<div id="quote"></div>
+<div id="love">❤️ I LOVE YOU AMMA ❤️</div>
+</div>
+
+<audio id="music" src="amma.mp3"></audio>
+
+<canvas id="confetti"></canvas>
+
+<script>
+
+var birthday = new Date("March 11, 2026 00:00:00").getTime();
+
+var x = setInterval(function(){
+
+var now = new Date().getTime();
+
+var distance = birthday - now;
+
+var days = Math.floor(distance/(1000*60*60*24));
+var hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+var minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+var seconds = Math.floor((distance%(1000*60))/1000);
+
+document.getElementById("countdown").innerHTML =
+"🎂 Amma Birthday Countdown 🎂<br><br>" +
+days+"d "+hours+"h "+minutes+"m "+seconds+"s ";
+
+if(distance < 0){
+
+clearInterval(x);
+
+document.getElementById("countdown").style.display="none";
+document.getElementById("touch").style.display="block";
+
+}
+
+},1000);
+
+
+
+document.getElementById("touch").onclick = function(){
+
+document.getElementById("touch").style.display="none";
+
+document.getElementById("quote").style.display="block";
+
+startTyping();
+
+startConfetti();
+
+document.getElementById("music").play();
+
+};
+
+
+
+var text = "❤️ இனிய பிறந்தநாள் வாழ்த்துகள் அம்மா ❤️\n\nஉன்னைத் தாயாக பெற நான் என்ன தவம் செய்தேனோ என்று பல நேரம் நினைக்கிறேன்.\nஇந்த உலகத்தில் எனக்கு கிடைத்த மிகப்பெரிய வரம் நீ தான் அம்மா.\n\nஅன்பின் வடிவமும் நீ,\nஅழகின் அர்த்தமும் நீ,\nஎன் வாழ்க்கையின் ஒளியும் நீ தான்.\n\nநான் சிரிக்க கற்றதும் உன்னிடம் தான்,\nநான் தைரியமாக இருக்க கற்றதும் உன்னிடம் தான்.\n\nஎன் சந்தோஷம் முழுவதும் உன்னாலே தான்.\nஎன் உலகமே நீ தான் அம்மா.\n\nநான் உன்னை மிகவும் நேசிக்கிறேன் ❤️\nஇனிய பிறந்தநாள் வாழ்த்துகள் அம்மா 🎂";
+var i=0;
+
+function startTyping(){
+
+if(i < text.length){
+
+document.getElementById("quote").innerHTML += text.charAt(i);
+
+i++;
+
+setTimeout(startTyping,40);
+
+}else{
+
+document.getElementById("love").style.display="block";
+
+startHearts();
+
+}
+
+}
+
+
+
+var canvas = document.getElementById("confetti");
+
+var ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+var pieces=[];
+
+for(let i=0;i<120;i++){
+
+pieces.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*8+2,
+speed:Math.random()*3+1
+
+});
+
+}
+
+function startConfetti(){
+
+setInterval(function(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pieces.forEach(function(p){
+
+ctx.fillStyle="white";
+
+ctx.fillRect(p.x,p.y,p.size,p.size);
+
+p.y+=p.speed;
+
+if(p.y>canvas.height){
+
+p.y=0;
+
+}
+
+});
+
+},30);
+
+}
+
+
+
+function startHearts(){
+
+setInterval(function(){
+
+var heart=document.createElement("div");
+
+heart.innerHTML="❤️";
+
+heart.style.position="fixed";
+heart.style.left=Math.random()*100+"%";
+heart.style.bottom="0px";
+heart.style.fontSize="30px";
+
+document.body.appendChild(heart);
+
+var pos=0;
+
+var fall=setInterval(function(){
+
+pos+=3;
+
+heart.style.bottom=pos+"px";
+
+if(pos>window.innerHeight){
+
+clearInterval(fall);
+heart.remove();
+
+}
+
+},30);
+
+},300);
+
+}
+
+</script>
+
+</body>
+</html>
